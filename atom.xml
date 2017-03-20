@@ -4,9 +4,9 @@
   <subtitle>成长</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
+  <link href="https://github.com/shenjing023/"/>
   <updated>2017-03-20T15:37:03.342Z</updated>
-  <id>http://yoursite.com/</id>
+  <id>https://github.com/shenjing023/</id>
   
   <author>
     <name>神经023</name>
@@ -17,8 +17,8 @@
   
   <entry>
     <title>article title</title>
-    <link href="http://yoursite.com/2017/03/20/article-title/"/>
-    <id>http://yoursite.com/2017/03/20/article-title/</id>
+    <link href="https://github.com/shenjing023/2017/03/20/article-title/"/>
+    <id>https://github.com/shenjing023/2017/03/20/article-title/</id>
     <published>2017-03-20T12:54:10.000Z</published>
     <updated>2017-03-20T15:37:03.342Z</updated>
     
@@ -26,21 +26,21 @@
     
     </summary>
     
-      <category term="sabbs" scheme="http://yoursite.com/categories/sabbs/"/>
+      <category term="sabbs" scheme="https://github.com/shenjing023/categories/sabbs/"/>
     
     
-      <category term="sbb" scheme="http://yoursite.com/tags/sbb/"/>
+      <category term="sbb" scheme="https://github.com/shenjing023/tags/sbb/"/>
     
   </entry>
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/2017/03/20/hello-world/"/>
-    <id>http://yoursite.com/2017/03/20/hello-world/</id>
+    <link href="https://github.com/shenjing023/2017/03/20/hello-world/"/>
+    <id>https://github.com/shenjing023/2017/03/20/hello-world/</id>
     <published>2017-03-20T12:47:07.406Z</published>
     <updated>2017-03-20T15:30:34.309Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Postsadasdas"</span></div></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
@@ -58,7 +58,7 @@
     </summary>
     
     
-      <category term="sjs" scheme="http://yoursite.com/tags/sjs/"/>
+      <category term="sjs" scheme="https://github.com/shenjing023/tags/sjs/"/>
     
   </entry>
   
