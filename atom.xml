@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-20T15:27:56.521Z</updated>
+  <updated>2017-03-20T15:32:41.987Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,12 +20,14 @@
     <link href="http://yoursite.com/2017/03/20/article-title/"/>
     <id>http://yoursite.com/2017/03/20/article-title/</id>
     <published>2017-03-20T12:54:10.000Z</published>
-    <updated>2017-03-20T15:27:56.521Z</updated>
+    <updated>2017-03-20T15:32:41.987Z</updated>
     
     <summary type="html">
     
     </summary>
     
+    
+      <category term="sbb" scheme="http://yoursite.com/tags/sbb/"/>
     
   </entry>
   
