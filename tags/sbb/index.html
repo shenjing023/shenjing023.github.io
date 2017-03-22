@@ -137,11 +137,11 @@
             ">全部</a>
          
 
-            <a href="/tags/sjs/" style="-webkit-order:0;order:0" class="tags-list-item waves-effect waves-button waves-light">sjs</a>
+            <a href="/tags/sbb/" style="-webkit-order:0;order:0" class="tags-list-item waves-effect waves-button waves-light active">sbb</a>
 
          
 
-            <a href="/tags/sbb/" style="-webkit-order:1;order:1" class="tags-list-item waves-effect waves-button waves-light active">sbb</a>
+            <a href="/tags/sjs/" style="-webkit-order:1;order:1" class="tags-list-item waves-effect waves-button waves-light">sjs</a>
 
         
     </nav>
@@ -313,6 +313,23 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Tags';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Tags';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
 
 
 

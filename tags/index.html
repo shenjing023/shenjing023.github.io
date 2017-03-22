@@ -138,11 +138,11 @@
              active">全部</a>
          
 
-            <a href="/tags/sjs/" style="-webkit-order:0;order:0" class="tags-list-item waves-effect waves-button waves-light">sjs</a>
+            <a href="/tags/sbb/" style="-webkit-order:0;order:0" class="tags-list-item waves-effect waves-button waves-light">sbb</a>
 
          
 
-            <a href="/tags/sbb/" style="-webkit-order:1;order:1" class="tags-list-item waves-effect waves-button waves-light">sbb</a>
+            <a href="/tags/sjs/" style="-webkit-order:1;order:1" class="tags-list-item waves-effect waves-button waves-light">sjs</a>
 
         
     </nav>
@@ -157,45 +157,6 @@
 
 <div class="container body-wrap fade">
     
-
-            <h3 class="archive-separator" id="tag-sjs">sjs</h3>
-
-            <div class="waterfall">
-            
-
-                <div class="waterfall-item">
-  <article class="article-card archive-article">
-    <div class="post-meta">
-      <time class="post-time" title="2017年03月20日 20:47" datetime="2017-03-20T12:47:07.406Z"  itemprop="datePublished">Mar 20, 2017</time>
-
-      
-
-
-    </div>
-    
-
-
-  
-    <h3 class="post-title" itemprop="name">
-      <a class="post-title-link" href="/2017/03/20/hello-world/">Hello World</a>
-    </h3>
-  
-
-
-
-    
-    <div class="post-footer">
-        
-	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sjs/">sjs</a></li></ul>
-
-    </div>
-    
-  </article>
-</div>
-
-            
-            </div>
-            
 
             <h3 class="archive-separator" id="tag-sbb">sbb</h3>
 
@@ -228,6 +189,45 @@
     <div class="post-footer">
         
 	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sbb/">sbb</a></li></ul>
+
+    </div>
+    
+  </article>
+</div>
+
+            
+            </div>
+            
+
+            <h3 class="archive-separator" id="tag-sjs">sjs</h3>
+
+            <div class="waterfall">
+            
+
+                <div class="waterfall-item">
+  <article class="article-card archive-article">
+    <div class="post-meta">
+      <time class="post-time" title="2017年03月20日 20:47" datetime="2017-03-20T12:47:07.406Z"  itemprop="datePublished">Mar 20, 2017</time>
+
+      
+
+
+    </div>
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/03/20/hello-world/">Hello World</a>
+    </h3>
+  
+
+
+
+    
+    <div class="post-footer">
+        
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sjs/">sjs</a></li></ul>
 
     </div>
     
@@ -355,6 +355,23 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = 'Tags';
+            clearTimeout(titleTime);
+        } else {
+            document.title = 'Tags';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
 
 
 
