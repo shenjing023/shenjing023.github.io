@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/shenjing023/"/>
-  <updated>2017-03-20T15:37:03.342Z</updated>
+  <updated>2017-03-20T15:30:34.309Z</updated>
   <id>https://github.com/shenjing023/</id>
   
   <author>
@@ -14,24 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>article title</title>
-    <link href="https://github.com/shenjing023/2017/03/20/article-title/"/>
-    <id>https://github.com/shenjing023/2017/03/20/article-title/</id>
-    <published>2017-03-20T12:54:10.000Z</published>
-    <updated>2017-03-20T15:37:03.342Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="sabbs" scheme="https://github.com/shenjing023/categories/sabbs/"/>
-    
-    
-      <category term="sbb" scheme="https://github.com/shenjing023/tags/sbb/"/>
-    
-  </entry>
   
   <entry>
     <title>Hello World</title>
