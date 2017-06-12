@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/shenjing023/"/>
-  <updated>2017-06-12T15:18:13.821Z</updated>
+  <updated>2017-06-12T15:41:17.950Z</updated>
   <id>https://github.com/shenjing023/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://github.com/shenjing023/2017/06/12/python%203.5.2%E5%AE%89%E8%A3%85mysql%E9%A9%B1%E5%8A%A8%E6%8A%A5%E9%94%99/"/>
     <id>https://github.com/shenjing023/2017/06/12/python 3.5.2安装mysql驱动报错/</id>
     <published>2017-06-12T14:24:27.628Z</published>
-    <updated>2017-06-12T15:18:13.821Z</updated>
+    <updated>2017-06-12T15:41:17.950Z</updated>
     
     <content type="html"><![CDATA[<p>python 3.5.2安装mysql驱动时出现如下异常:<br><figure class="image-bubble">
                 <div class="img-lightbox">
@@ -47,7 +47,7 @@
     </summary>
     
     
-      <category term="python mysql驱动" scheme="https://github.com/shenjing023/tags/python-mysql%E9%A9%B1%E5%8A%A8/"/>
+      <category term="mysql" scheme="https://github.com/shenjing023/tags/mysql/"/>
     
   </entry>
   
