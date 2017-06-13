@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/shenjing023/"/>
-  <updated>2017-06-12T15:41:17.950Z</updated>
+  <updated>2017-06-13T13:25:55.535Z</updated>
   <id>https://github.com/shenjing023/</id>
   
   <author>
@@ -14,6 +14,77 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Effective C++读书笔记</title>
+    <link href="https://github.com/shenjing023/2017/06/13/Effective%20C++%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <id>https://github.com/shenjing023/2017/06/13/Effective C++读书笔记/</id>
+    <published>2017-06-13T13:26:10.170Z</published>
+    <updated>2017-06-13T13:25:55.535Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="条款02：尽量以const，enum，inline替换-define"><a href="#条款02：尽量以const，enum，inline替换-define" class="headerlink" title="条款02：尽量以const，enum，inline替换#define"></a>条款02：尽量以const，enum，inline替换#define</h3><blockquote>
+<p><strong>请记住</strong></p>
+<ul>
+<li>对于单纯常量，最好以const对象或enums替换#define  </li>
+<li>对于形似函数的宏(macros)，最好改用inline函数替换#define<br>###条款03：尽可能使用const<br>&ensp;&ensp;const可以用在classes外部修饰global或namespace作用域中的常量，或修饰文件、函数、或区块作用域(block space)中被声明为static的对象，也可以用它修饰classes内部的static和non-static成员变量。对于指针，可以指出指针自身、指针所指物，或两者都(或都不)是const：<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> greeting[]=<span class="string">"hello"</span>;</div><div class="line"><span class="keyword">char</span> *p=greeting;		<span class="comment">//non-const pointer,non-const data</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> *p=greeting;	<span class="comment">//non-const pointer,const data</span></div><div class="line"><span class="keyword">char</span>* <span class="keyword">const</span> p=greeting;	<span class="comment">//const pointer,non-const data</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> p=greeting;	<span class="comment">//const pointer,const data</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>&ensp;&ensp;关键字const出现在<em>号左边，表示被指物是常量；出现在</em>号右边，表示指针自身是常量；出现在*号两边，表示被指物和指针两者都是常量。</p>
+<blockquote>
+<p><strong>请记住</strong></p>
+<ul>
+<li>将某些东西声明为const可帮助编译器侦测出错误用法，const可被施加于任何作用域的对象、函数参数、函数返回类型、成员函数本体。</li>
+<li>编译器强制实施bitwise constness，但编写程序时应该使用“概念上的常量性”(conceptual constness)。</li>
+<li>当const和non-const成员函数有着是指等价的实现时，另non-const版本调用const版本可避免代码重复。  </li>
+</ul>
+</blockquote>
+<h3 id="条款4：确定对象使用前先被初始化"><a href="#条款4：确定对象使用前先被初始化" class="headerlink" title="条款4：确定对象使用前先被初始化"></a>条款4：确定对象使用前先被初始化</h3><p>&ensp;&ensp;有些情况下即使面对的成员变量属于内置类型(那么其初始值或赋值的成本相同)，也一定得使用初值列。如果成员变量是const或references，那就一定需要初值，不能被赋值(见条款5)。为避免需要记住成员变量何时必须在成员初值列中初始化，何时不需要，最简单的做法是：总是使用成员初值列，这样做有时候绝对必要，且有往往比赋值更高效。<br>&ensp;&ensp;C++有着十分固定的“成员初始化次序”，次序总是相同：base classes更早于其derived classes被初始化(见条款12)，而class的长远变量总是以其声明次序被初始化。当成员初值列中条件各个成员时，最好总是以其声明次序为次序。</p>
+<h3 id="条款5：了解C-默默编写并调用哪些函数"><a href="#条款5：了解C-默默编写并调用哪些函数" class="headerlink" title="条款5：了解C++默默编写并调用哪些函数"></a>条款5：了解C++默默编写并调用哪些函数</h3><blockquote>
+<p><strong>请记住</strong></p>
+<ul>
+<li>(c++98)编译器可以暗自为default构造函数、copy构造函数、copy assignment操作符，以及析构函数。(c++11)新添加了两个特殊成员函数:移动构造函数和移动赋值算子。</li>
+</ul>
+</blockquote>
+<p>&ensp;&ensp;如果在一个“内含reference成员”的class内只吃赋值操作(assignment)，必须自定义copy assignment操作符。“内含const成员”的class也是一样，更改const成员是不合法的，所以编译器不知道如何在它自己生成的赋值函数内面对它们。最后还有一种情况：如果某个base classes将copy assignment操作符声明为private，编译器将拒绝为其derived classes生成一个copy assignment操作符。<br>&ensp;&ensp;c++11禁用拷贝构造函数和赋值构造函数，可在想要 “禁止使用” 的函数声明后加 “= delete”，而需要保留的加 “= default” 或者不采取操作。</p>
+<h3 id="条款7：为多态基类声明virtual析构函数"><a href="#条款7：为多态基类声明virtual析构函数" class="headerlink" title="条款7：为多态基类声明virtual析构函数"></a>条款7：为多态基类声明virtual析构函数</h3><blockquote>
+<p><strong>请记住</strong></p>
+<ul>
+<li>polymorphic（带多态性质的）base classes应该声明一个virtual析构函数。如果class带有任何virtual函数，它就应该拥有一个virtual析构函数。</li>
+<li>Classes的设计目的如果不是作为base classes使用，或不是为了具备多态性（polymorphically），就不该声明析构函数。</li>
+</ul>
+</blockquote>
+<h3 id="条款9：绝不在构造和析构过程中调用virtual函数"><a href="#条款9：绝不在构造和析构过程中调用virtual函数" class="headerlink" title="条款9：绝不在构造和析构过程中调用virtual函数"></a>条款9：绝不在构造和析构过程中调用virtual函数</h3><blockquote>
+<p><strong>请记住</strong></p>
+<ul>
+<li>在构造和析构期间不要调用virtual函数，因为这类调用从不下降至derived class（比起当前执行构造函数和析构函数的那层）</li>
+</ul>
+</blockquote>
+<h3 id="条款10：令operator-返回一个reference-to-this"><a href="#条款10：令operator-返回一个reference-to-this" class="headerlink" title="条款10：令operator=返回一个reference to *this"></a>条款10：令operator=返回一个reference to *this</h3><blockquote>
+<p><strong>请记住</strong></p>
+<ul>
+<li>令赋值（assignment）操作符返回一个reference to *this。</li>
+</ul>
+</blockquote>
+<h3 id="条款20：宁以pass-by-reference-to-const替换pass-by-value"><a href="#条款20：宁以pass-by-reference-to-const替换pass-by-value" class="headerlink" title="条款20：宁以pass-by-reference-to-const替换pass-by-value"></a>条款20：宁以pass-by-reference-to-const替换pass-by-value</h3><blockquote>
+<p><strong>请记住</strong></p>
+<ul>
+<li>尽量以pass-by-reference-to-const替换pass-by-value。前者通常比较高效，并可避免切割问题（slicing problem）</li>
+<li>以上规则并不适用于内置类型，以及STL的迭代器对象。对它们而言，pass-by-value往往比较合适</li>
+</ul>
+</blockquote>
+<h3 id="条款36：绝不重新定义继承而来的non-virtual函数"><a href="#条款36：绝不重新定义继承而来的non-virtual函数" class="headerlink" title="条款36：绝不重新定义继承而来的non-virtual函数"></a>条款36：绝不重新定义继承而来的non-virtual函数</h3><h3 id="条款37：绝不重新定义继承而来的缺省参数值"><a href="#条款37：绝不重新定义继承而来的缺省参数值" class="headerlink" title="条款37：绝不重新定义继承而来的缺省参数值"></a>条款37：绝不重新定义继承而来的缺省参数值</h3>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;条款02：尽量以const，enum，inline替换-define&quot;&gt;&lt;a href=&quot;#条款02：尽量以const，enum，inline替换-define&quot; class=&quot;headerlink&quot; title=&quot;条款02：尽量以const，enum，inlin
+    
+    </summary>
+    
+    
+      <category term="Effective C++;mysql" scheme="https://github.com/shenjing023/tags/Effective-C-mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>python 3.5.2安装mysql驱动报错</title>
