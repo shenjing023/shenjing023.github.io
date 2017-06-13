@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/shenjing023/"/>
-  <updated>2017-06-13T13:25:55.535Z</updated>
+  <updated>2017-06-13T13:31:29.652Z</updated>
   <id>https://github.com/shenjing023/</id>
   
   <author>
@@ -14,6 +14,37 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入理解C++的动态绑定与静态绑定</title>
+    <link href="https://github.com/shenjing023/2017/06/13/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3C++%E7%9A%84%E5%8A%A8%E6%80%81%E7%BB%91%E5%AE%9A%E4%B8%8E%E9%9D%99%E6%80%81%E7%BB%91%E5%AE%9A/"/>
+    <id>https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/</id>
+    <published>2017-06-13T13:31:47.822Z</published>
+    <updated>2017-06-13T13:31:29.652Z</updated>
+    
+    <content type="html"><![CDATA[<p>&ensp;&ensp;C++的多态性，使用了的动态绑定与静态绑定，理解它们的区别有助于更好的理解多态性，以及在变成过程中避免错误，需要理解四个名词：<br>1、对象的静态类型：对象在声明时采用的类型。是在编译期确定的。<br>2、对象的动态类型：目前所指对象的类型，是在运行期决定的。<br>&ensp;&ensp;对象的动态可以更改，但静态类型无法更改。关于对象的静态与动态类型，看一示例：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> B</div><div class="line">&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> C:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> D:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">&#125;</div><div class="line">D *pD=<span class="keyword">new</span> D();	<span class="comment">//pD的静态类型是它声明的类型D*，动态类型也是D*</span></div><div class="line">B *pB=pD;	<span class="comment">//pB的静态类型是它声明的类型B*，动态类型是pB所指向的对象pD的类型D*</span></div><div class="line">C *pC=<span class="keyword">new</span> C();</div><div class="line">pB=pC;	<span class="comment">//pB的动态类型是可以更改的，现在它的动态类型是C*</span></div></pre></td></tr></table></figure></p>
+<p>3、静态绑定：绑定的是对象的静态类型，某特性（比如函数）依赖于对象的静态类型，发生在编译期。<br>4、动态绑定：绑定的是对象的动态类型，某特性（比如函数）依赖于对象的动态类型，发生在运行期。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> B</div><div class="line">&#123;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> C:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">	<span class="comment">//子类重新定义了父类的no-virtual函数，这是一个不好的设计，会导致名称遮掩；这里只是为了说明动态绑定和静态绑定才这样使用</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> D:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line">D *pD=<span class="keyword">new</span> D();</div><div class="line">B *pB=pD;</div></pre></td></tr></table></figure></p>
+<p>让我们看一下，pD-&gt;doSomething()和pB-&gt;doSomething()调用的是同一个函数吗？<br>不是的，虽然pD和pB都指向同一个对象。因为函数doSomething是一个no-virtual函数，它是静态绑定的，也就是编译器会在编译期根据对象的静态类型来选择函数。pD的静态类型是D<em>，那么编译器在处理pD-&gt;doSomething()的时候会将它指向D::doSomething()。同理，pB的静态类型是B</em>，那pB-&gt;doSomething()调用的就是B::doSomething()。</p>
+<p>让我们再来看一下，pD-&gt;vfun()和pB-&gt;vfun()调用的是同一个函数吗？<br>是的。因为vfun是一个虚函数，它动态绑定的，也就是说它绑定的是对象的动态类型，pB和pD虽然静态类型不同，但是他们同时指向一个对象，他们的动态类型是相同的，都是D*，所以，他们的调用的是同一个函数：D::vfun()。</p>
+<p>上面都是针对对象指针的情况，对于引用（reference）的情况同样适用。</p>
+<p>指针和引用的动态类型和静态类型可能会不一致，但是对象的动态类型和静态类型是一致的。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">D D;</div><div class="line">D.doSomething()和D.vfun()永远调用的都是D::doSomething()和D::vfun()</div></pre></td></tr></table></figure></p>
+<p>至于那些事动态绑定，那些事静态绑定，有篇文章总结的非常好：只有虚函数才使用的是动态绑定，其他的全部是静态绑定。</p>
+<p>特别需要注意的地方当缺省参数和虚函数一起出现的时候情况有点复杂，极易出错。我们知道，虚函数是动态绑定的，但是为了执行效率，缺省参数是静态绑定的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> B</div><div class="line">&#123;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">(<span class="keyword">int</span> i=<span class="number">10</span>)</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> D:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">(<span class="keyword">int</span> i=<span class="number">20</span>)</span></span>;</div><div class="line">&#125;</div><div class="line">D *pD=<span class="keyword">new</span> D();</div><div class="line">B *pB=pD;</div><div class="line">pD-&gt;vfun();</div><div class="line">pB-&gt;vfun();</div></pre></td></tr></table></figure>
+<p>有上面的分析可知pD-&gt;vfun()和pB-&gt;vfun()调用都是函数D::vfun()，但是他们的缺省参数是多少？<br>分析一下，缺省参数是静态绑定的，pD-&gt;vfun()时，pD的静态类型是D*，所以它的缺省参数应该是20；同理，pB-&gt;vfun()的缺省参数应该是10。</p>
+<p>摘自：<a href="https://www.oschina.net/question/54100_20313" target="_blank" rel="external">https://www.oschina.net/question/54100_20313</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&amp;ensp;&amp;ensp;C++的多态性，使用了的动态绑定与静态绑定，理解它们的区别有助于更好的理解多态性，以及在变成过程中避免错误，需要理解四个名词：&lt;br&gt;1、对象的静态类型：对象在声明时采用的类型。是在编译期确定的。&lt;br&gt;2、对象的动态类型：目前所指对象的类型，是在运
+    
+    </summary>
+    
+    
+      <category term="c++" scheme="https://github.com/shenjing023/tags/c/"/>
+    
+  </entry>
   
   <entry>
     <title>Effective C++读书笔记</title>

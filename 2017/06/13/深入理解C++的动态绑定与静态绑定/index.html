@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>深入理解C++的动态绑定与静态绑定 | 023 Blog | 成长</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#428bca">
+    
+    
+    <meta name="keywords" content="c++">
+    <meta name="description" content="&amp;ensp;&amp;ensp;C++的多态性，使用了的动态绑定与静态绑定，理解它们的区别有助于更好的理解多态性，以及在变成过程中避免错误，需要理解四个名词：1、对象的静态类型：对象在声明时采用的类型。是在编译期确定的。2、对象的动态类型：目前所指对象的类型，是在运行期决定的。&amp;ensp;&amp;ensp;对象的动态可以更改，但静态类型无法更改。关于对象的静态与动态类型，看一示例：123456789101112">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解C++的动态绑定与静态绑定">
+<meta property="og:url" content="https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/index.html">
+<meta property="og:site_name" content="023 Blog">
+<meta property="og:description" content="&amp;ensp;&amp;ensp;C++的多态性，使用了的动态绑定与静态绑定，理解它们的区别有助于更好的理解多态性，以及在变成过程中避免错误，需要理解四个名词：1、对象的静态类型：对象在声明时采用的类型。是在编译期确定的。2、对象的动态类型：目前所指对象的类型，是在运行期决定的。&amp;ensp;&amp;ensp;对象的动态可以更改，但静态类型无法更改。关于对象的静态与动态类型，看一示例：123456789101112">
+<meta property="og:updated_time" content="2017-06-13T13:31:29.652Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入理解C++的动态绑定与静态绑定">
+<meta name="twitter:description" content="&amp;ensp;&amp;ensp;C++的多态性，使用了的动态绑定与静态绑定，理解它们的区别有助于更好的理解多态性，以及在变成过程中避免错误，需要理解四个名词：1、对象的静态类型：对象在声明时采用的类型。是在编译期确定的。2、对象的动态类型：目前所指对象的类型，是在运行期决定的。&amp;ensp;&amp;ensp;对象的动态可以更改，但静态类型无法更改。关于对象的静态与动态类型，看一示例：123456789101112">
+    
+        <link rel="alternative" href="/atom.xml" title="023 Blog" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.14">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">神经023</h5>
+          <a href="mailto:lw137885@126.com" title="lw137885@126.com" class="mail">lw137885@126.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/shenjing023" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">深入理解C++的动态绑定与静态绑定</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">深入理解C++的动态绑定与静态绑定</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-06-13T13:31:47.822Z" itemprop="datePublished" class="page-time">
+  2017-06-13
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+<article id="post-深入理解C++的动态绑定与静态绑定"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">深入理解C++的动态绑定与静态绑定</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年06月13日 21:31" datetime="2017-06-13T13:31:47.822Z"  itemprop="datePublished">2017-06-13</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>&ensp;&ensp;C++的多态性，使用了的动态绑定与静态绑定，理解它们的区别有助于更好的理解多态性，以及在变成过程中避免错误，需要理解四个名词：<br>1、对象的静态类型：对象在声明时采用的类型。是在编译期确定的。<br>2、对象的动态类型：目前所指对象的类型，是在运行期决定的。<br>&ensp;&ensp;对象的动态可以更改，但静态类型无法更改。关于对象的静态与动态类型，看一示例：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> B</div><div class="line">&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> C:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> D:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">&#125;</div><div class="line">D *pD=<span class="keyword">new</span> D();	<span class="comment">//pD的静态类型是它声明的类型D*，动态类型也是D*</span></div><div class="line">B *pB=pD;	<span class="comment">//pB的静态类型是它声明的类型B*，动态类型是pB所指向的对象pD的类型D*</span></div><div class="line">C *pC=<span class="keyword">new</span> C();</div><div class="line">pB=pC;	<span class="comment">//pB的动态类型是可以更改的，现在它的动态类型是C*</span></div></pre></td></tr></table></figure></p>
+<p>3、静态绑定：绑定的是对象的静态类型，某特性（比如函数）依赖于对象的静态类型，发生在编译期。<br>4、动态绑定：绑定的是对象的动态类型，某特性（比如函数）依赖于对象的动态类型，发生在运行期。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> B</div><div class="line">&#123;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> C:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">	<span class="comment">//子类重新定义了父类的no-virtual函数，这是一个不好的设计，会导致名称遮掩；这里只是为了说明动态绑定和静态绑定才这样使用</span></div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> D:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">	<span class="function"><span class="keyword">void</span> <span class="title">doSomething</span><span class="params">()</span></span>;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">()</span></span>;</div><div class="line">&#125;</div><div class="line">D *pD=<span class="keyword">new</span> D();</div><div class="line">B *pB=pD;</div></pre></td></tr></table></figure></p>
+<p>让我们看一下，pD-&gt;doSomething()和pB-&gt;doSomething()调用的是同一个函数吗？<br>不是的，虽然pD和pB都指向同一个对象。因为函数doSomething是一个no-virtual函数，它是静态绑定的，也就是编译器会在编译期根据对象的静态类型来选择函数。pD的静态类型是D<em>，那么编译器在处理pD-&gt;doSomething()的时候会将它指向D::doSomething()。同理，pB的静态类型是B</em>，那pB-&gt;doSomething()调用的就是B::doSomething()。</p>
+<p>让我们再来看一下，pD-&gt;vfun()和pB-&gt;vfun()调用的是同一个函数吗？<br>是的。因为vfun是一个虚函数，它动态绑定的，也就是说它绑定的是对象的动态类型，pB和pD虽然静态类型不同，但是他们同时指向一个对象，他们的动态类型是相同的，都是D*，所以，他们的调用的是同一个函数：D::vfun()。</p>
+<p>上面都是针对对象指针的情况，对于引用（reference）的情况同样适用。</p>
+<p>指针和引用的动态类型和静态类型可能会不一致，但是对象的动态类型和静态类型是一致的。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">D D;</div><div class="line">D.doSomething()和D.vfun()永远调用的都是D::doSomething()和D::vfun()</div></pre></td></tr></table></figure></p>
+<p>至于那些事动态绑定，那些事静态绑定，有篇文章总结的非常好：只有虚函数才使用的是动态绑定，其他的全部是静态绑定。</p>
+<p>特别需要注意的地方当缺省参数和虚函数一起出现的时候情况有点复杂，极易出错。我们知道，虚函数是动态绑定的，但是为了执行效率，缺省参数是静态绑定的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> B</div><div class="line">&#123;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">(<span class="keyword">int</span> i=<span class="number">10</span>)</span></span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">class</span> D:<span class="keyword">public</span> B</div><div class="line">&#123;</div><div class="line">	<span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">vfun</span><span class="params">(<span class="keyword">int</span> i=<span class="number">20</span>)</span></span>;</div><div class="line">&#125;</div><div class="line">D *pD=<span class="keyword">new</span> D();</div><div class="line">B *pB=pD;</div><div class="line">pD-&gt;vfun();</div><div class="line">pB-&gt;vfun();</div></pre></td></tr></table></figure>
+<p>有上面的分析可知pD-&gt;vfun()和pB-&gt;vfun()调用都是函数D::vfun()，但是他们的缺省参数是多少？<br>分析一下，缺省参数是静态绑定的，pD-&gt;vfun()时，pD的静态类型是D*，所以它的缺省参数应该是20；同理，pB-&gt;vfun()的缺省参数应该是10。</p>
+<p>摘自：<a href="https://www.oschina.net/question/54100_20313" target="_blank" rel="external">https://www.oschina.net/question/54100_20313</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-06-13T13:31:29.652Z" itemprop="dateUpdated">2017年6月13日 21:31</time>
+</span><br>
+
+
+        转载请注明出处：<a href="/2017/06/13/深入理解C++的动态绑定与静态绑定/" target="_blank" rel="external">https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/index.html</a>
+    </div>
+    <footer>
+        <a href="https://github.com/shenjing023">
+            <img src="/img/avatar.jpg" alt="神经023">
+            神经023
+        </a>
+    </footer>
+</blockquote>
+
+        
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/c/">c++</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/&title=《深入理解C++的动态绑定与静态绑定》 — 023 Blog&pic=https://github.com/shenjing023/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/&title=《深入理解C++的动态绑定与静态绑定》 — 023 Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深入理解C++的动态绑定与静态绑定》 — 023 Blog&url=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/&via=https://github.com/shenjing023" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between flex-row-reverse">
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/06/13/Effective C++读书笔记/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Effective C++读书笔记</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+</article>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>023 Blog &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/&title=《深入理解C++的动态绑定与静态绑定》 — 023 Blog&pic=https://github.com/shenjing023/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/&title=《深入理解C++的动态绑定与静态绑定》 — 023 Blog&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深入理解C++的动态绑定与静态绑定》 — 023 Blog&url=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/&via=https://github.com/shenjing023" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="//api.qrserver.com/v1/create-qr-code/?data=https://github.com/shenjing023/2017/06/13/深入理解C++的动态绑定与静态绑定/" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: false };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.14"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.14" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
