@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/shenjing023/"/>
-  <updated>2017-06-25T09:49:53.524Z</updated>
+  <updated>2017-06-25T09:50:52.657Z</updated>
   <id>https://github.com/shenjing023/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Effective C++读书笔记</title>
+    <title>学习Scrapy入门</title>
     <link href="https://github.com/shenjing023/2017/06/25/%E5%AD%A6%E4%B9%A0Scrapy%E5%85%A5%E9%97%A8/"/>
     <id>https://github.com/shenjing023/2017/06/25/学习Scrapy入门/</id>
     <published>2017-06-25T09:40:38.583Z</published>
-    <updated>2017-06-25T09:49:53.524Z</updated>
+    <updated>2017-06-25T09:50:52.657Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Scrapy介绍Scrapy入门"><a href="#Scrapy介绍Scrapy入门" class="headerlink" title="Scrapy介绍Scrapy入门"></a>Scrapy介绍Scrapy入门</h2><p>Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。 可以应用在包括数据挖掘，信息处理或存储历史数据等一系列的程序中。<br>所谓网络爬虫，就是一个在网上到处或定向抓取数据的程序，当然，这种说法不够专业，更专业的描述就是，抓取特定网站网页的HTML数据。抓取网页的一般方法是，定义一个入口页面，然后一般一个页面会有其他页面的URL，于是从当前页面获取到这些URL加入到爬虫的抓取队列中，然后进入到新页面后再递归的进行上述的操作，其实说来就跟深度遍历或广度遍历一样。Scrapy 使用 Twisted这个异步网络库来处理网络通讯，架构清晰，并且包含了各种中间件接口，可以灵活的完成各种需求。</p>
 <h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><figure class="image-bubble">
@@ -92,7 +92,7 @@
     </summary>
     
     
-      <category term="Effective C++" scheme="https://github.com/shenjing023/tags/Effective-C/"/>
+      <category term="scrapy" scheme="https://github.com/shenjing023/tags/scrapy/"/>
     
   </entry>
   
