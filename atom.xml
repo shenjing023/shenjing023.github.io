@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/shenjing023/"/>
-  <updated>2017-06-13T13:31:29.652Z</updated>
+  <updated>2017-06-25T09:40:38.644Z</updated>
   <id>https://github.com/shenjing023/</id>
   
   <author>
@@ -14,6 +14,89 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="https://github.com/shenjing023/2017/06/25/%E5%AD%A6%E4%B9%A0Scrapy%E5%85%A5%E9%97%A8/"/>
+    <id>https://github.com/shenjing023/2017/06/25/学习Scrapy入门/</id>
+    <published>2017-06-25T09:40:38.583Z</published>
+    <updated>2017-06-25T09:40:38.644Z</updated>
+    
+    <content type="html"><![CDATA[<hr>
+<p>title: 学习Scrapy入门</p>
+<h2 id="tags-scrapy"><a href="#tags-scrapy" class="headerlink" title="tags: scrapy"></a>tags: scrapy</h2><h2 id="Scrapy介绍"><a href="#Scrapy介绍" class="headerlink" title="Scrapy介绍"></a>Scrapy介绍</h2><p>Scrapy是一个为了爬取网站数据，提取结构性数据而编写的应用框架。 可以应用在包括数据挖掘，信息处理或存储历史数据等一系列的程序中。<br>所谓网络爬虫，就是一个在网上到处或定向抓取数据的程序，当然，这种说法不够专业，更专业的描述就是，抓取特定网站网页的HTML数据。抓取网页的一般方法是，定义一个入口页面，然后一般一个页面会有其他页面的URL，于是从当前页面获取到这些URL加入到爬虫的抓取队列中，然后进入到新页面后再递归的进行上述的操作，其实说来就跟深度遍历或广度遍历一样。Scrapy 使用 Twisted这个异步网络库来处理网络通讯，架构清晰，并且包含了各种中间件接口，可以灵活的完成各种需求。</p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://ord6anrvd.bkt.clouddn.com/201706251115_745.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+<blockquote>
+<ul>
+<li>引擎(Scrapy Engine)，用来处理整个系统的数据流处理，触发事务。</li>
+<li>调度器(Scheduler)，用来接受引擎发过来的请求，压入队列中，并在引擎再次请求的时候返回。</li>
+<li>下载器(Downloader)，用于下载网页内容，并将网页内容返回给蜘蛛。</li>
+<li>蜘蛛(Spiders)，蜘蛛是主要干活的，用它来制订特定域名或网页的解析规则。编写用于分析response并提取item(即获取到的item)或额外跟进的URL的类。 每个spider负责处理一个特定(或一些)网站。</li>
+<li>项目管道(Item Pipeline)，负责处理有蜘蛛从网页中抽取的项目，他的主要任务是清晰、验证和存储数据。当页面被蜘蛛解析后，将被发送到项目管道，并经过几个特定的次序处理数据。</li>
+<li>下载器中间件(Downloader Middlewares)，位于Scrapy引擎和下载器之间的钩子框架，主要是处理Scrapy引擎与下载器之间的请求及响应。</li>
+<li>蜘蛛中间件(Spider Middlewares)，介于Scrapy引擎和蜘蛛之间的钩子框架，主要工作是处理蜘蛛的响应输入和请求输出。</li>
+<li>调度中间件(Scheduler Middlewares)，介于Scrapy引擎和调度之间的中间件，从Scrapy引擎发送到调度的请求和响应。<h2 id="爬取流程"><a href="#爬取流程" class="headerlink" title="爬取流程"></a>爬取流程</h2>上图绿线是数据流向，首先从初始URL开始，Scheduler会将其交给Downloader进行下载，下载之后会交给Spider进行分析，Spider分析出来的结果有两种：一种是需要进一步抓取的链接，这些东西会被传回Scheduler；另一种是需要保存的数据，它们则被送到Item Pipeline那里，那是对数据进行后期处理（详细分析、过滤、存储等）的地方。另外，在数据流动的通道里还可以安装各种中间件，进行必要的处理。<h2 id="数据流"><a href="#数据流" class="headerlink" title="数据流"></a>数据流</h2>Scrapy中的数据流由执行引擎控制，其过程如下:</li>
+</ul>
+<ol>
+<li>引擎打开一个网站(open a domain)，找到处理该网站的Spider并向该spider请求第一个要爬取的URL(s)。</li>
+<li>引擎从Spider中获取到第一个要爬取的URL并在调度器(Scheduler)以Request调度。</li>
+<li>引擎向调度器请求下一个要爬取的URL。</li>
+<li>调度器返回下一个要爬取的URL给引擎，引擎将URL通过下载中间件(请求(request)方向)转发给下载器(Downloader)。</li>
+<li>一旦页面下载完毕，下载器生成一个该页面的Response，并将其通过下载中间件(返回(response)方向)发送给引擎。</li>
+<li>引擎从下载器中接收到Response并通过Spider中间件(输入方向)发送给Spider处理。</li>
+<li>Spider处理Response并返回爬取到的Item及(跟进的)新的Request给引擎。</li>
+<li>引擎将(Spider返回的)爬取到的Item给Item Pipeline，将(Spider返回的)Request给调度器。</li>
+<li>(从第二步)重复直到调度器中没有更多地request，引擎关闭该网站。<h2 id="Scrapy项目基本流程"><a href="#Scrapy项目基本流程" class="headerlink" title="Scrapy项目基本流程"></a>Scrapy项目基本流程</h2><h3 id="默认的Scrapy项目结构"><a href="#默认的Scrapy项目结构" class="headerlink" title="默认的Scrapy项目结构"></a>默认的Scrapy项目结构</h3>使用全局命令startproject创建项目<br>scrapy startproject tutorial  </li>
+</ol>
+</blockquote>
+<p>即可自动创建官方标准的代码目录。<br><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://ord6anrvd.bkt.clouddn.com/201706251151_285.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure></p>
+<p>其中:</p>
+<ul>
+<li>tutorial/:该项目的python总模块</li>
+<li>scrapy.cfg:项目的配置文件</li>
+<li>tutorial/items.py:项目中的item文件，编写爬取的字段名称</li>
+<li>tutorial/pipelines.py: 项目中的pipelines文件</li>
+<li>utorial/settings.py: 项目的设置文件，较为重要</li>
+<li>tutorial/spiders/: 放置spider代码的主目录</li>
+</ul>
+<h3 id="定义要抓取的数据"><a href="#定义要抓取的数据" class="headerlink" title="定义要抓取的数据"></a>定义要抓取的数据</h3><p>Item是保存爬取到的数据的容器，其实用方法和python字典类似，并且提供了额外保护机制来避免瓶邪错误导致的未定义字段错误。</p>
+<h3 id="编写提取item数据的Spider"><a href="#编写提取item数据的Spider" class="headerlink" title="编写提取item数据的Spider"></a>编写提取item数据的Spider</h3><p>Spider是用户编写用于从单个网站(或者一些网站)爬取数据的类。<br>其包含了一个用于下载的初始URL，如何跟进网页中的链接以及如何分析页面中的内容， 提取生成 item 的方法。<br>为了创建一个Spider，必须继承 scrapy.Spider 类，且定义以下三个属性:</p>
+<blockquote>
+<ul>
+<li>name:用于区别Spider，该名字必须是唯一的，不可以为不同的Spider设定相同的名字。</li>
+<li>start_urls: 包含了Spider在启动时进行爬取的url列表。 因此，第一个被获取到的页面将是其中之一， 后续的URL则从初始的URL获取到的数据中提取。</li>
+<li>parse() 是spider的一个方法。 被调用时，每个初始URL完成下载后生成的 Response 对象将会作为唯一的参数传递给该函数。 该方法负责解析返回的数据(response data)，提取数据(生成item)以及生成需要进一步处理的URL的 Request 对象。</li>
+</ul>
+</blockquote>
+<h3 id="进行爬取"><a href="#进行爬取" class="headerlink" title="进行爬取"></a>进行爬取</h3><p>执行项目命令crawl，启动Spider</p>
+<blockquote>
+<p>scrapy crawl tutorial</p>
+</blockquote>
+<p>在这个过程中：<br>Scrapy为Spider的 start_urls 属性中的每个URL创建了 scrapy.Request 对象，并将 parse 方法作为回调函数(callback)赋值给了Request。<br>Request对象经过调度，执行生成 scrapy.http.Response 对象并送回给spider parse() 方法。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;hr&gt;
+&lt;p&gt;title: 学习Scrapy入门&lt;/p&gt;
+&lt;h2 id=&quot;tags-scrapy&quot;&gt;&lt;a href=&quot;#tags-scrapy&quot; class=&quot;headerlink&quot; title=&quot;tags: scrapy&quot;&gt;&lt;/a&gt;tags: scrapy&lt;/h2&gt;&lt;h2 i
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>深入理解C++的动态绑定与静态绑定</title>
