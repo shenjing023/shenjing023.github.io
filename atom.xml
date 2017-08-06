@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/shenjing023/"/>
-  <updated>2017-06-25T09:50:52.657Z</updated>
+  <updated>2017-08-06T00:42:50.461Z</updated>
   <id>https://github.com/shenjing023/</id>
   
   <author>
@@ -14,6 +14,97 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>QWebChannel与Js交互</title>
+    <link href="https://github.com/shenjing023/2017/08/06/QWebChannel%E4%B8%8EJs%E4%BA%A4%E4%BA%92/"/>
+    <id>https://github.com/shenjing023/2017/08/06/QWebChannel与Js交互/</id>
+    <published>2017-08-06T00:30:20.292Z</published>
+    <updated>2017-08-06T00:42:50.461Z</updated>
+    
+    <content type="html"><![CDATA[<p>QWebChannel可以暴露Qt对象给HTML端，可以实现Qt与Js之间的相互调用。</p>
+<h2 id="主要的步骤"><a href="#主要的步骤" class="headerlink" title="主要的步骤"></a>主要的步骤</h2><p>pro文件添加<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">QT += webenginewidgets webchannel</div></pre></td></tr></table></figure></p>
+<p>cpp文件<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">QWebEnginePage *page = <span class="keyword">new</span> QWebEnginePage(<span class="keyword">this</span>);</div><div class="line">webView-&gt;setPage(page);</div><div class="line">webView-&gt;load(QUrl(<span class="string">"qrc:/html/index.html"</span>));</div><div class="line">webView-&gt;show();</div><div class="line">QWebChannel *channel = <span class="keyword">new</span> QWebChannel(<span class="keyword">this</span>);</div><div class="line"><span class="comment">//注册一个content,这里的内容通过JS的content来获取</span></div><div class="line">channel-&gt;registerObject(QString(<span class="string">"content"</span>),<span class="keyword">this</span>);</div><div class="line">page-&gt;setWebChannel(channel);</div></pre></td></tr></table></figure></p>
+<p>Qt发送信号到Js:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">signals:   </div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">sendSignal</span><span class="params">(param)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>Qt接受Js发送的信号<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> slots:</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">receiveSlot</span><span class="params">(param)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>Js文件:<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> QWebChannel(qt.webChannelTransport,<span class="function"><span class="keyword">function</span> (<span class="params">channel</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> content = channel.objects.content;</div><div class="line">    <span class="comment">//接受Qt发送的信号</span></div><div class="line">    content.sendSignal.connect(<span class="function"><span class="keyword">function</span>(<span class="params">param</span>)</span>&#123;</div><div class="line"></div><div class="line">    &#125;);</div><div class="line">    <span class="comment">//发送信号给Qt</span></div><div class="line">    content.receiveSlot(param);</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>最后在cpp文件的析构函数中关闭信号连接<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>-&gt;disconnect();</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;QWebChannel可以暴露Qt对象给HTML端，可以实现Qt与Js之间的相互调用。&lt;/p&gt;
+&lt;h2 id=&quot;主要的步骤&quot;&gt;&lt;a href=&quot;#主要的步骤&quot; class=&quot;headerlink&quot; title=&quot;主要的步骤&quot;&gt;&lt;/a&gt;主要的步骤&lt;/h2&gt;&lt;p&gt;pro文件添加
+    
+    </summary>
+    
+    
+      <category term="QWebChannel" scheme="https://github.com/shenjing023/tags/QWebChannel/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>qqmlapplicationengine与qquickview的主要区别</title>
+    <link href="https://github.com/shenjing023/2017/08/06/qqmlapplicationengine%E4%B8%8Eqquickview%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8C%BA%E5%88%AB/"/>
+    <id>https://github.com/shenjing023/2017/08/06/qqmlapplicationengine与qquickview的主要区别/</id>
+    <published>2017-08-06T00:30:20.276Z</published>
+    <updated>2017-08-06T00:38:42.847Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="QQmlApplicationEngine搭配Window"><a href="#QQmlApplicationEngine搭配Window" class="headerlink" title="QQmlApplicationEngine搭配Window"></a>QQmlApplicationEngine搭配Window</h3><h3 id="QQuickView搭配Item"><a href="#QQuickView搭配Item" class="headerlink" title="QQuickView搭配Item"></a>QQuickView搭配Item</h3><p>使用QQuickView显示QML文档，对窗口的控制权（比如设置窗口标题、Icon、窗口的最小尺寸等）在C++代码；而使用QQmlApplicationEngine加载以Window为根对象的QML文档，QML文档则拥有窗口的完整控制权，可以直接设置标题、窗口尺寸等属性。</p>
+<ol>
+<li>QQmlApplicationEngine搭配Window启动方式：</li>
+</ol>
+<p>main.cpp文件<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">QApplication <span class="title">app</span><span class="params">(argc, argv)</span></span>;</div><div class="line">    QQmlApplicationEngine engine;</div><div class="line">    engine.load(QUrl(QStringLiteral(<span class="string">"qrc:/main.qml"</span>)));</div><div class="line">    <span class="keyword">return</span> app.exec();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>main.qml文件<br><figure class="highlight qml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="title">ApplicationWindow</span> &#123;</div><div class="line">    <span class="attribute">title</span>: qsTr(<span class="string">"Hello World"</span>)</div><div class="line">    <span class="attribute">width</span>: <span class="number">640</span></div><div class="line">    <span class="attribute">height</span>: <span class="number">480</span></div><div class="line">    <span class="attribute">visible</span>: <span class="literal">true</span></div><div class="line">    <span class="attribute">menuBar</span>: <span class="title">MenuBar</span> &#123;</div><div class="line">        <span class="title">Menu</span> &#123;</div><div class="line">            <span class="attribute">title</span>: qsTr(<span class="string">"&amp;File"</span>)</div><div class="line">            <span class="title">MenuItem</span> &#123;</div><div class="line">                <span class="attribute">text</span>: qsTr(<span class="string">"&amp;Open"</span>)</div><div class="line">                <span class="attribute">onTriggered</span>: messageDialog.show(qsTr(<span class="string">"Open action triggered"</span>));</div><div class="line">            &#125;</div><div class="line">            <span class="title">MenuItem</span> &#123;</div><div class="line">                <span class="attribute">text</span>: qsTr(<span class="string">"E&amp;xit"</span>)</div><div class="line">                <span class="attribute">onTriggered</span>: Qt.quit();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="title">MainForm</span> &#123;</div><div class="line">        <span class="attribute">anchors.fill</span>: <span class="built_in">parent</span></div><div class="line">        <span class="attribute">button1.onClicked</span>: messageDialog.show(qsTr(<span class="string">"Button 1 pressed"</span>))</div><div class="line">        <span class="attribute">button2.onClicked</span>: messageDialog.show(qsTr(<span class="string">"Button 2 pressed"</span>))</div><div class="line">        <span class="attribute">button3.onClicked</span>: messageDialog.show(qsTr(<span class="string">"Button 3 pressed"</span>))</div><div class="line">    &#125;</div><div class="line">    <span class="title">MessageDialog</span> &#123;</div><div class="line">        <span class="attribute">id:</span><span class="string"> messageDialog</span></div><div class="line">        <span class="attribute">title</span>: qsTr(<span class="string">"May I have your attention, please?"</span>)</div><div class="line">        <span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params">caption</span>) </span>&#123;</div><div class="line">            messageDialog.text = caption;</div><div class="line">            messageDialog.open();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>QQuickView搭配Item</li>
+</ol>
+<p>main.cpp文件<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QApplication&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QQuickView&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QGuiApplication&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QQmlApplicationEngine&gt;</span></span></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span></span></div><div class="line">&#123;</div><div class="line">    <span class="function">QGuiApplication <span class="title">app</span><span class="params">(argc, argv)</span></span>;</div><div class="line">    QQuickView viewer;</div><div class="line">    viewer.setResizeMode(QQuickView::SizeRootObjectToView);</div><div class="line">    viewer.setSource(QUrl(<span class="string">"qrc:///main.qml"</span>));</div><div class="line">    viewer.show();</div><div class="line">    <span class="keyword">return</span> app.exec();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>main.qml文件<br><figure class="highlight qml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> QtQuick <span class="number">2.4</span></div><div class="line"><span class="keyword">import</span> QtQuick.Controls <span class="number">1.3</span></div><div class="line"><span class="keyword">import</span> QtQuick.Window <span class="number">2.2</span></div><div class="line"><span class="keyword">import</span> QtQuick.Dialogs <span class="number">1.2</span></div><div class="line"><span class="title">Rectangle</span>&#123;</div><div class="line">    <span class="attribute">width</span>: <span class="number">320</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">240</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;QQmlApplicationEngine搭配Window&quot;&gt;&lt;a href=&quot;#QQmlApplicationEngine搭配Window&quot; class=&quot;headerlink&quot; title=&quot;QQmlApplicationEngine搭配Window&quot;&gt;&lt;/a
+    
+    </summary>
+    
+    
+      <category term="qqmlapplicationengine与qquickview" scheme="https://github.com/shenjing023/tags/qqmlapplicationengine%E4%B8%8Eqquickview/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>简单的动态规划问题</title>
+    <link href="https://github.com/shenjing023/2017/08/06/LintCode%20%E7%AE%80%E5%8D%95%E7%9A%84%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E9%97%AE%E9%A2%98/"/>
+    <id>https://github.com/shenjing023/2017/08/06/LintCode 简单的动态规划问题/</id>
+    <published>2017-08-06T00:30:20.261Z</published>
+    <updated>2017-08-06T00:36:22.058Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>我们有一个栅栏，它有n个柱子，现在要给柱子染色，有k种颜色可以染。<br>必须保证任意两个相邻的柱子颜色不同，求有多少种染色方案。</p>
+<h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>这是典型的动态规划问题，从最后的情况开始讨论。<br>假设buff[i]为有i个柱子时的染色方案。可以分为两种情况：</p>
+<ul>
+<li>最后两根柱子颜色相同</li>
+<li>最后两根柱子颜色不同</li>
+</ul>
+<p>对于第一种情况，最后两根柱子颜色相同，不能三根柱子颜色连续相同，所以最后两根柱子的颜色选择有k-1种，所以buff[i-2]k-1</p>
+<p>对于第二种情况，最后两根柱子颜色不同，那么最后一根柱子的颜色有k-1种选择方案，所以buff[i-1]k-1<br>所以综上，我们就得出状态转移方程为：</p>
+<p>buff[i] = buff[i-1] (k-1) + buff[i-2] (k-1);</p>
+<p>初始条件：<br>buff[1] = k; buff[2] = k*k;</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> Solution &#123;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * @param n non-negative integer, n posts</div><div class="line">     * @param k non-negative integer, k colors</div><div class="line">     * @return an integer, the total number of ways</div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">numWays</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> k)</span> </span>&#123;</div><div class="line">        <span class="comment">// Write your code here</span></div><div class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>)</div><div class="line">            <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        <span class="keyword">if</span> (n == <span class="number">1</span>)</div><div class="line">            <span class="keyword">return</span> k;</div><div class="line">        <span class="keyword">if</span> (n == <span class="number">2</span>)</div><div class="line">            <span class="keyword">return</span> k*k;</div><div class="line">        <span class="keyword">int</span> pre = k;</div><div class="line">        <span class="keyword">int</span> now = k*k;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">3</span>; i &lt;= n; i++)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">int</span> tmp = now;</div><div class="line">            now = (pre+now) * (k<span class="number">-1</span>);</div><div class="line">            pre = tmp;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> now;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">作者：六尺帐篷</div><div class="line">链接：http:<span class="comment">//www.jianshu.com/p/487160fa7d45</span></div><div class="line">來源：简书</div><div class="line">著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;题目&quot;&gt;&lt;a href=&quot;#题目&quot; class=&quot;headerlink&quot; title=&quot;题目&quot;&gt;&lt;/a&gt;题目&lt;/h3&gt;&lt;p&gt;我们有一个栅栏，它有n个柱子，现在要给柱子染色，有k种颜色可以染。&lt;br&gt;必须保证任意两个相邻的柱子颜色不同，求有多少种染色方案。&lt;/p&gt;
+
+    
+    </summary>
+    
+    
+      <category term="动态规划" scheme="https://github.com/shenjing023/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"/>
+    
+  </entry>
   
   <entry>
     <title>学习Scrapy入门</title>
